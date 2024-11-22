@@ -1,14 +1,14 @@
-#############################################
-### Data for Fal trends in the Wadden Sea ###
-#############################################
+########################################
+### Data for Trop. in the Wadden Sea ###
+########################################
 
 # Authors list - To be completed
-# Lucie Kuczynski, Alexey Ryabov,  Helmut Hillebrand
+# Lucie Kuczynski,Helmut Hillebrand
 
 # L. Kuczynski
 # lucie.kuczynski@hotmail.com
 # May, 2024
-# last edit: May 2024
+# last edit: June 2024
 
 for(i in 1:10) gc(reset = T) ; rm(list = ls())
 
@@ -16,24 +16,14 @@ for(i in 1:10) gc(reset = T) ; rm(list = ls())
 
 # Structure of the script
 
-# LXX-XX: Import and formating the bird data, four datasets
-#   - only resident species in this area
-#   - non breeding season (i.e. winter) + resident species
-#   - breeding season + resident species
-#   - all species encountered
-
-# LXX-XX: Macrozoobenthos data
-# LXX-XX: Phytoplankton data
+# L26-56: Macrozoobenthos data
+# L60-115: Phytoplankton data
 
 # MISC. FUNCTIONS
 
 
 
-
-
-
 # MACROZOOBENTHOS (MZB) DATA 
-
 # Importing time series
 mzb <- na.omit(read.csv(
   '/Users/lucie/Documents/Work/Data/Data_Oldenburg/Wadden Sea/MZB/MARISCO_MZB_raw.csv')[, -5])
@@ -67,7 +57,6 @@ write.csv(x = mzb, file = '../data/mzb_abundances_wide.csv')
 for(i in 1:10) gc(reset = T) ; rm(list = ls())
 
 # PHYTOPLANKTON (PPKT) DATA
-
 # For now, at least, not integrating NL data
 # No coordinates available...
 
@@ -101,7 +90,7 @@ write.csv(x = DE_PPKT, file = '../data/ppkt.csv')
 DE_PPKT$SampleID <- paste(DE_PPKT$StationID, DE_PPKT$Year, sep = '_')
 
 # Importing the coordinates of the sites
-coords <- na.omit(read.csv('/Users/lucie/Documents/Work/Data/Data_Oldenburg/Wadden Sea/PPKT/ppkt.coords.csv'))
+coords <- na.omit(read.csv('/Users/lucie/Documents/Work/Data/Data_Oldenburg/Wadden Sea/PPKT/ppkt.coords.csv'))[, -1]
 
 # Saving sample infos (StationID, year, lat and long, SampleID)
 infos <- unique(DE_PPKT[, c(1:2, 5)])
