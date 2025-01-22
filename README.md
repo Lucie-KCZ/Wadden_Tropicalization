@@ -108,6 +108,41 @@ Dependencies and Warnings
   - Many scripts expect columns named `SampleID`, `StationID`, `year`, `lat`, `long`, `temperature`, `actual`. If yours differ, rename or tweak the code.
 - **Environment Clearing**: 
   - Each script begins by clearing the R environment (using `rm(list=ls())`). Comment this out if undesired.
+- **File organisation**: 
+  - Here is the organisation fo the data when the scripts were developed. Please do not forget to update the path to prevent errors.
+
+```
+/YourProject
+├── temperature_MODIS
+│   ├── R
+|   |    ├── extract_sst.R
+|   |    └── extract_sst.R
+│   ├── data
+│   |    ├── raw
+│   |    │   ├── file1.nc
+│   |    │   └── file2.nc
+│   |    ├── processed
+│   |    │   ├── file1.tif
+│   |    │   ├── file2.tif
+│   |    │   └── ...
+│   |    └── average_sst.tif
+|   ├── terminal.txt 
+|   ├── TerraModis_STT_url.txt
+|   └── download.py
+└── main
+    ├── data
+    │    ├── mzb_abundances_wide.csv
+    │    ├── ppkt_wide.csv
+    │    ├── mzb_temperatures.csv
+    │    ├── mzb_STI.csv
+    │    └── ...
+    └── analysis
+        ├── extract_temperature_for_communities.R
+        ├── compute_STI_and_occurrences.R
+        ├── CTI_script.R
+        └── ...
+```
+
 
 By following these scripts in order, you can:
 1. Merge your community data with actual/average SST,

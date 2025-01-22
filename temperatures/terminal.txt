@@ -1,0 +1,4 @@
+python /Users/lucie/Documents/Work/Data/TerraModis/download.py \
+--verbose \
+--filelist /Users/lucie/Documents/Work/Data/TerraModis/TerraModis_STT_url.txt \
+--odir "/Users/lucie/Documents/Work/Data/TerraModis/data/raw/AquaMODIS" \
