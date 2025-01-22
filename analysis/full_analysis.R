@@ -45,6 +45,7 @@ avg_sst_file <- file.path(modis_dir, "average_sst.tif")
 temperature_output <- file.path(output_dir, paste0(data_name, "_temperatures.csv"))
 sti_output <- file.path(output_dir, paste0(data_name, "_STI.csv"))
 
+
 # =============================================================================
 # Step 1: Temperature Extraction
 # =============================================================================
