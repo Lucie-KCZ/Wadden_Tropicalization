@@ -45,28 +45,6 @@ avg_sst_file <- file.path(modis_dir, "average_sst.tif")
 temperature_output <- file.path(output_dir, paste0(data_name, "_temperatures.csv"))
 sti_output <- file.path(output_dir, paste0(data_name, "_STI.csv"))
 
-
-
-# Set your data name (e.g., "mzb" or "ppkt")
-data_name <- "mzb"
-
-# Define directory structure
-base_dir <- "/Users/lucie/Dropbox/Wadden_Tropicalization"  # MODIFY THIS PATH
-input_dir <- file.path(base_dir, "data")
-output_dir <- file.path(base_dir, "output")
-modis_dir <- file.path("/Users/lucie/Documents/Work/Data/TerraModis/data/processed/AquaMODIS")  # MODIFY THIS PATH
-
-# Create output directory if it doesn't exist
-if(!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
-
-# Define file paths
-community_file <- file.path(input_dir, paste0(data_name, "_wide.csv"))
-avg_sst_file <- file.path("/Users/lucie/Documents/Work/Data/TerraModis/data/processed/average_sst.tif")  # MODIFY THIS PATH
-temperature_output <- file.path(output_dir, paste0(data_name, "_temperatures.csv"))
-sti_output <- file.path(output_dir, paste0(data_name, "_STI.csv"))
-
-
-
 # =============================================================================
 # Step 1: Temperature Extraction
 # =============================================================================
