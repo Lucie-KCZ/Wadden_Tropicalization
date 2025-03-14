@@ -180,9 +180,118 @@ def httpdl(server, request, localpath='.', outputfilename=None, ntries=5,
 
     return status
 
-# Additional helper functions are provided, including uncompression and checksum verification.
-# The script uses argparse to process command-line arguments for flexibility.
+# Function to uncompress a file
+def uncompressFile(compressed_file):
+    """
+    Uncompresses a file using the appropriate method based on its extension.
+    """
+    if compressed_file.suffix == '.Z':
+        cmd = ['uncompress', compressed_file]
+    elif compressed_file.suffix == '.gz':
+        cmd = ['gunzip', compressed_file]
+    elif compressed_file.suffix == '.bz2':
+        cmd = ['bunzip2', compressed_file]
+    else:
+        return 0
+    
+    try:
+        subprocess.run(cmd, check=True)
+        return 0
+    except subprocess.CalledProcessError:
+        return 1
 
-# The `main` section orchestrates downloading, retrying, and handling errors.
+# Main section to process command-line arguments and download files
+def main():
+    """
+    Main function to process command-line arguments and download files.
+    """
+    # Create an argument parser with comprehensive help text
+    parser = argparse.ArgumentParser(
+        description='Download files from MODIS/OB.DAAC servers.',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent('''
+            Examples:
+              python download.py --filelist urls.txt --odir data/
+              python download.py --verbose --uncompress --filelist urls.txt
+            ''')
+    )
+    
+    # Required arguments
+    parser.add_argument('--filelist', required=True, help='File containing URLs to download')
+    
+    # Optional arguments
+    parser.add_argument('--odir', default='.', help='Output directory (default: current directory)')
+    parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
+    parser.add_argument('--uncompress', action='store_true', help='Uncompress downloaded files')
+    parser.add_argument('--timeout', type=float, default=30.0, help='Timeout for HTTP requests in seconds')
+    parser.add_argument('--ntries', type=int, default=5, help='Number of retry attempts')
+    
+    # Parse the command-line arguments
+    args = parser.parse_args()
+    
+    # Set verbosity level
+    verbose = 1 if args.verbose else 0
+    
+    # Check if the file list exists
+    if not os.path.exists(args.filelist):
+        print(f"Error: File list '{args.filelist}' not found")
+        return 1
+    
+    # Create the output directory if it doesn't exist
+    os.makedirs(args.odir, exist_ok=True)
+    
+    # Read the URLs from the file list
+    try:
+        with open(args.filelist, 'r') as f:
+            urls = [line.strip() for line in f if line.strip()]
+    except Exception as e:
+        print(f"Error reading file list: {e}")
+        return 1
+    
+    if not urls:
+        print("No URLs found in the file list")
+        return 1
+    
+    if verbose:
+        print(f"Found {len(urls)} URLs to download")
+    
+    # Download each URL
+    fail_count = 0
+    for i, url in enumerate(urls, 1):
+        if verbose:
+            print(f"\nProcessing URL {i}/{len(urls)}: {url}")
+        
+        # Parse the URL to get the server and path
+        parsed_url = urlparse(url)
+        server = parsed_url.netloc
+        request = parsed_url.path
+        
+        if not server or not request:
+            print(f"Invalid URL: {url}")
+            fail_count += 1
+            continue
+        
+        # Download the file
+        status = httpdl(
+            server=server,
+            request=request,
+            localpath=args.odir,
+            uncompress=args.uncompress,
+            timeout=args.timeout,
+            verbose=verbose,
+            ntries=args.ntries
+        )
+        
+        if status != 0:
+            print(f"Failed to download {url}, status code: {status}")
+            fail_count += 1
+    
+    # Print a summary
+    if verbose:
+        print(f"\nDownload summary: {len(urls) - fail_count} successful, {fail_count} failed")
+    
+    return 0 if fail_count == 0 else 1
 
-# To run this script, a valid `.netrc` file or app key is required for authentication.
+# Execute the main function when the script is run directly
+if __name__ == "__main__":
+    sys.exit(main())
