@@ -8,6 +8,8 @@ It includes:
 - A full set of **R scripts for manual analysis**.
 - Supporting tools for **sea surface temperature (SST) data extraction and processing**.
 
+This work is largely inspired by the studies of [McLean et al. (2021)](https://www.cell.com/current-biology/fulltext/S0960-9822(21)01138-6) and [Chust et al. (2024)](https://www.nature.com/articles/s41467-024-46526-y) - thanks to the authors for their great contribution to the field that serves as a basis of our own work! 
+
 ---
 
 ## Ecological background and purpose
